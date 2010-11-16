@@ -1,0 +1,26 @@
+                        PlotMaps Widget v1.0
+
+To be used & abused :)
+
+________________________________________________________________________________
+                            RUNNING
+
+Script needs the following R packages installed:
+* ggplot2
+* maps
+* maptools
+* rgdal
+* gWidgets
+* cairoDevice
+* gWidgetsRGtk2
+
+
+Run it by executing PlotMaps.r script (remember to adjust the path). Widget is written for RGtk2 (probably not tcltk compliant, however I have no tested it). I will work on removing rgdal dependency as installing it is quite space-hungry.  
+________________________________________________________________________________
+                            TODO
+* Add support for other kml layers (ex points)
+* Add "plot on whole globe" mode
+* Text labels need more work
+                                                       
+                            
+                         
