@@ -4,8 +4,9 @@
 # Make it work in two modes: partial data, full globe
 # Do sth about bad text labelling (centers)
 # Add more options (font size, vertical, horizontal adjust)
-# Rate labels in proper order 
-
+# Supress all the warnings from rgdal::readOGR 
+# parse the data and labels of the locations from kml file only
+# add some jitter to labels positions to avoid overplotting
 
 ###########
 #---RUN---#
