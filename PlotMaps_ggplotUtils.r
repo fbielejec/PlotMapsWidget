@@ -21,8 +21,10 @@ fun <- function(char) strsplit(char, "\\_")[[1]][1]
 rates <- data.frame(apply(rates, 1 ,fun))
 names(rates) <- c("rates")
 
-KMLdataset <- cbind(data, rates)
-list(KMLdataset, places)
+dataset <- cbind(data, rates)
+ProperOrder<-reorder(levels(dataset$rates), as.numeric(do.call("rbind", strsplit(levels(dataset$rates), "rate"))[,-1]) )
+dataset$rates <- factor(dataset$rates, levels = levels(ProperOrder) )
+list(dataset, places)
 
 }
 
@@ -40,9 +42,12 @@ max_lon = svalue(MaxLon)
 min_lat = svalue(MinLat)
 max_lat = svalue(MaxLat)
 
-world.map <- map_data("world")
-world.map <- world.map[1:5]
-world.map <- world.map[order(world.map$order), ]
+  world.map <- map_data("world")
+  world.map <- world.map[1:5]
+#  world.map <- subset(world.map, region != "Antarctica")
+  world.map <- world.map[-grep("Sea|Lake", world.map$region),]
+  world.map <- world.map[-grep("Island", world.map$region),]
+  world.map <- world.map[order(world.map$order), ]
 
 offest<-25
 keepMap <- (world.map$lat >= min_lat - offest) & (world.map$lat <= max_lat + offest) & (world.map$long >= min_lon - offest) & (world.map$long <= max_lon + offest)
@@ -80,7 +85,7 @@ p.map <- p.map + scale_x_continuous(breaks = xmaj )
 p.map <- p.map + ylab("")+xlab("") 
 svalue(status_bar) <- "Printing to screen..."
 print(p.map)
-svalue(status_bar) <- "Done. Expand widget for full screen view."
+svalue(status_bar) <- "Done!"
 }
 
 
