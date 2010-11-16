@@ -36,7 +36,8 @@ KmlOpenerHandler <- function(h, ...) {
 get.eps=function(h,...) {
 local({
 dev.set (2)
-dev.print(device=postscript, file=h$file, onefile=FALSE, paper="special", horizontal=FALSE);
+ggsave(h$file)
+#dev.print(device=postscript, file=h$file, onefile=FALSE, paper="special", horizontal=FALSE);
 })
 svalue(status_bar) <- "Done"
 }
@@ -44,9 +45,8 @@ svalue(status_bar) <- "Done"
 get.png <- function(h,...) {
 local({
 dev.set (2)
-#ggsave(h$file)
-#dev.print(png, file=h$file, width=par("din")[1], height=par("din")[2], type = "cairo")
-dev.print(png, file=h$file, width=2048, height=1024)
+ggsave(h$file)
+#dev.print(png, file=h$file, width=2048, height=1024)
 })
 svalue(status_bar) <- "Done"
 }
@@ -110,5 +110,5 @@ gbutton("Quit", handler =  function(h,...) {
 	}, 
 	container = group )
 
-status_bar <- gstatusbar("Welcome", container = window)
+status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", container = window)
 
