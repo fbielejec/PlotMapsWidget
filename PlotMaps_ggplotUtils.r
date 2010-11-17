@@ -4,7 +4,6 @@
 #################
 #---locations---#
 #################
-#filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/locationHIV2A.txt"
 
 GetLocations <- function(filename) {
 locations        <- read.table(filename)
@@ -18,7 +17,6 @@ return(locations)
 ############
 #---.out---#
 ############
-#filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/WA_HIV2A.out"
 
 GetDataset <- function(filename) {
 out        <- read.table(filename, skip=3)[c(1,3,5)]
@@ -52,6 +50,7 @@ poly_color       <- svalue(poly_color)
 boundaries_color <- svalue(boundaries_color)
 text_labels_col  <- svalue(text_labels_col)
 locations_size   <- svalue(locations_size)
+arrow_size       <-svalue(arrow_size)   
 
   world.map <- map_data("world")
   world.map <- world.map[1:5]
@@ -81,10 +80,13 @@ p.map <- switch(mode,
 p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour="white")) 
 
 p.map <- p.map + geom_point(data = locations, aes(x = Longitude, y = Latitude), color = I("white"), size = locations_size)
-p.map <- p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color = factor(round(BF,2)) ), size = I(1.0), 
-arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ) 
 
-p.map <- p.map + geom_text(data = locations, aes(x = Longitude, y = jitter(Latitude, 35), label = location), hjust = -0.1, family = 3, vjust = 0.0, size = 4, color = text_labels_col) 
+# I want to supress arrows at value 0
+if(svalue(arrow_size)!=0) {
+p.map <- p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color = factor(round(BF,2)) ), size = I(arrow_size), arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ) 
+}
+
+p.map <- p.map + geom_text(data = locations, aes(x = Longitude, y = jitter(Latitude, 35), label = location), hjust = -0.1, family = 3, vjust = 0.0, size = svalue(text_labels_size), color = text_labels_col) 
 
 xgrid <- grid.pretty(c(max_lon, min_lon)) 
 xmaj <- xgrid[-length(xgrid)]
