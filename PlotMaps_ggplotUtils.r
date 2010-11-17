@@ -22,6 +22,7 @@ GetDataset <- function(filename) {
 out        <- read.table(filename, skip=3)[c(1,3,5)]
 names(out) <- c("BF","from","to")
 out$BF     <- as.numeric(do.call("rbind",strsplit(levels(out$BF),"="))[,2])
+out$BF     <- factor(round(out$BF,2))
 out$x      <- locations$Longitude[match( out$from, locations$location )]
 out$y      <- locations$Latitude[match( out$from, locations$location )]
 out$xend   <- locations$Longitude[match( out$to, locations$location )]
@@ -83,7 +84,7 @@ p.map <- p.map + geom_point(data = locations, aes(x = Longitude, y = Latitude), 
 
 # I want to supress arrows at value 0
 if(svalue(arrow_size)!=0) {
-p.map <- p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color = factor(round(BF,2)) ), size = I(arrow_size), arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ) 
+p.map <- p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color = BF ), size = I(arrow_size), arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ) 
 }
 
 p.map <- p.map + geom_text(data = locations, aes(x = Longitude, y = jitter(Latitude, 35), label = location), hjust = -0.1, family = 3, vjust = 0.0, size = svalue(text_labels_size), color = text_labels_col) 
