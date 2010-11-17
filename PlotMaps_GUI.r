@@ -49,7 +49,7 @@ menulist = list(
   )
 
 window <- gwindow("PlotMap Widget")
-Menu <- gtoolbar(menulist, cont = TRUE, container = window, style="both")
+Menu <- gtoolbar(menulist, cont = TRUE, container = window, style = "both")
 
 ## Push buttons to right
 #addSpring(menulist)
@@ -86,8 +86,10 @@ tmp <- gframe("Select coordinates", container = group)
 SelectCoord <- gdroplist(c("map", "cartesian"), container = tmp)
 
 #slider to choose size of locations points
-tmp <- gframe("Choose points size", container = group)
-locations_size <- gspinbutton(from = 0, to = 10, by = 1, value = 4, container = tmp)
+tmp <- gframe("Points / font / arrows size", container = group)
+locations_size   <- gspinbutton(from = 0, to = 10, by = 1, value = 7, container = tmp)
+text_labels_size <- gspinbutton(from = 0, to = 10, by = 1, value = 3, container = tmp)
+arrow_size       <- gspinbutton(from = 0, to = 10, by = 1, value = 1, container = tmp)
 
 #droplist for poly_color ( play with them and choose some nice ones )
 tmp <- gframe("Polygons color", container = group)
@@ -111,7 +113,6 @@ status_bar <- gstatusbar("Welcome. Expand widget for full screen view.",
 
 # Color choice
 #c("burlywood", "grey20", "black", "orange", "grey60")
-
 
 
 
