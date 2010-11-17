@@ -15,13 +15,13 @@ Script needs the following R packages installed:
 * gWidgetsRGtk2
 
 
-Run it by executing PlotMaps.r script (remember to adjust the path). Widget is written for RGtk2 (probably not tcltk compliant, however I have no tested it). 
+Run it by executing PlotMaps.r script (remember to adjust the path). Widget is written for RGtk2 (probably not tcltk compliant, however I have not tested it). 
 ________________________________________________________________________________
                             TODO
 # Make it work in two modes: partial data, full globe
-# Add more options (font size, vertical, horizontal adjust, colors, bins...)
+# Add more options (font size, vertical, horizontal adjust, colors, factor bins...)
 # Supress all the warnings from rgdal::readOGR 
-# add some jitter to labels positions to avoid overplotting
-                                                       
+# add some jitter to labels positions to avoid overplotting (still not perfect)
+# Work on looks and layout, currently its kinda ugly                                                       
                             
                          
