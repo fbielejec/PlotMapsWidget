@@ -8,8 +8,6 @@ ________________________________________________________________________________
 Script needs the following R packages installed:
 * ggplot2
 * maps
-* maptools
-* rgdal
 * gWidgets
 * cairoDevice
 * gWidgetsRGtk2
