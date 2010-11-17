@@ -2,7 +2,7 @@
 #---TODO---#
 ############
 # Make it work in two modes: partial data, full globe
-# Add more options (font size, vertical, horizontal adjust)
+# Add more options (font size, vertical, horizontal adjust, colors, bins...)
 # Supress all the warnings from rgdal::readOGR 
 # add some jitter to labels positions to avoid overplotting
 # add more tryCatch blocks, especially for plotting
