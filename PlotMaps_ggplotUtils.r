@@ -1,46 +1,48 @@
-#############################
-#---PARSING DATA FROM KML---#
-#############################
-getKmlData <- function(filename) {
+####################
+#---PARSING DATA---#
+####################
+#################
+#---locations---#
+#################
+#filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/locationHIV2A.txt"
 
-layer = svalue(KmlLayer)
+GetLocations <- function(filename) {
+locations        <- read.table(filename)
+names(locations) <- c("location", "Latitude","Longitude")
+locations        <- locations[c(1,3,2)]
+return(locations)
+}
 
-coords <- getKMLcoordinates(filename, ignoreAltitude=TRUE)
+############
+#---.out---#
+############
+#filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/WA_HIV2A.out"
 
-places <- data.frame(do.call("rbind", coords[1:8]))
-names(places) <- c("Longitude", "Latitude")
-
-data <- data.frame(do.call("rbind", coords[9:length(coords)]))
-rows.to.keep <- as.numeric(row.names(data))%%2
-data <- data[rows.to.keep==1,]
-names(data) <- c("Longitude", "Latitude")
-
-rates<-readOGR(filename, layer=layer)
-rates <- (data.frame(rates))
-fun <- function(char) strsplit(char, "\\_")[[1]][1]
-rates <- data.frame(apply(rates, 1 ,fun))
-names(rates) <- c("rates")
-
-dataset <- cbind(data, rates)
-ProperOrder<-reorder(levels(dataset$rates), as.numeric(do.call("rbind", strsplit(levels(dataset$rates), "rate"))[,-1]) )
-dataset$rates <- factor(dataset$rates, levels = levels(ProperOrder) )
-list(dataset, places)
-
+GetDataset <- function(filename) {
+out        <- read.table(filename, skip=3)[c(1,3,5)]
+names(out) <- c("BF","from","to")
+out$BF     <- as.numeric(do.call("rbind",strsplit(levels(out$BF),"="))[,2])
+out$x      <- locations$Longitude[match( out$from, locations$location )]
+out$y      <- locations$Latitude[match( out$from, locations$location )]
+out$xend   <- locations$Longitude[match( out$to, locations$location )]
+out$yend   <- locations$Latitude[match( out$to, locations$location )]
+return(out)
 }
 
 ########################
 #---PARTIAL MAP DATA---#
 ########################
-mid_range <- function(x) {
-median(range(x))
-}
-
 PlotOnMap <- function(h,...) {
+
+   tryCatch({
 
 min_lon = svalue(MinLon)
 max_lon = svalue(MaxLon)
 min_lat = svalue(MinLat)
 max_lat = svalue(MaxLat)
+
+locations = GetLocations( svalue(LocFile) )
+out = GetDataset( svalue(OutFile) )
 
   world.map <- map_data("world")
   world.map <- world.map[1:5]
@@ -53,14 +55,9 @@ offest<-25
 keepMap <- (world.map$lat >= min_lat - offest) & (world.map$lat <= max_lat + offest) & (world.map$long >= min_lon - offest) & (world.map$long <= max_lon + offest)
 MapData <- world.map[keepMap,]
 
-keepCountries <- (world.map$lat >= min_lat) & (world.map$lat <= max_lat) & (world.map$long >= min_lon) & (world.map$long <= max_lon) 
-CountryData <- world.map[keepCountries,]
-
-centres <- ddply(CountryData, c("region"), summarise, lat = mid_range(lat), long = mid_range(long))
-
 svalue(status_bar) <- "Rendering map data..."
 plot(1, col="white", xlab="", ylab="", main="", xaxt="n", yaxt="n", type="n", xlim=c(min_lon, max_lon), axes = F)
-MAXSTRING <- max(strwidth(centres$region))
+MAXSTRING <- max(strwidth(locations$location))
 
 p.map <- ggplot(MapData, aes(long, lat)) 
 p.map <- p.map + geom_polygon(aes(long, lat, group = group), size = .2, color = "#C4C4C4")
@@ -73,9 +70,13 @@ p.map <- switch(mode,
 		)
  
 p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour="white")) 
-p.map <- p.map + geom_text(data=centres, aes(long, lat, label = region), hjust=0.0, family=3, vjust=0.0, size=5, color="orange")
-p.map <- p.map + geom_path(data=dataset, aes(x=Longitude, y=Latitude, color=rates))
-p.map <- p.map + geom_point(data=places, aes(x=Longitude, y=Latitude), color="white")
+
+p.map <- p.map + geom_point(data=locations, aes(x=Longitude, y=Latitude), color="white")
+p.map <- p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color=factor(round(BF,2)) ), size=I(1.0), 
+arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ) 
+#p.map <- p.map + scale_fill_brewer(type="seq") 
+p.map <- p.map + geom_text(data=locations, aes(x=Longitude, y=jitter(Latitude,35), label = location), hjust=-0.1, family=3, vjust=0.0, size=4, color="orange") 
+
 xgrid <- grid.pretty(c(max_lon, min_lon)) 
 xmaj <- xgrid[-length(xgrid)]
 ygrid <- grid.pretty(c(max_lat, min_lat)) 
@@ -86,6 +87,8 @@ p.map <- p.map + ylab("")+xlab("")
 svalue(status_bar) <- "Printing to screen..."
 print(p.map)
 svalue(status_bar) <- "Done!"
+ 
+    }, error = function(e) svalue(status_bar) <- "Could not finish plotting")
 }
 
 
