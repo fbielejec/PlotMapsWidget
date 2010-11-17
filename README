@@ -19,7 +19,7 @@ Run it by executing PlotMaps.r script (remember to adjust the path). Widget is w
 ________________________________________________________________________________
                             TODO
 # Make it work in two modes: partial data, full globe
-# Add more options (font size, vertical, horizontal adjust, colors, factor bins...)
+# Add more options (vertical, horizontal adjust, factor bins...)
 # Supress all the warnings from rgdal::readOGR 
 # add some jitter to labels positions to avoid overplotting (still not perfect)
 # Work on looks and layout, currently its kinda ugly                                                       
