@@ -57,7 +57,7 @@ BigGroup <- ggroup(cont = window)
 group <- ggroup(horizontal = FALSE, container = BigGroup)
 add(BigGroup, ggraphics())
 
-gseparator(container = group)
+#gseparator(container = group)
 
 #####---TEMPORARY---#########################################
 tmp <- gframe("Path to locations file", container = group)
@@ -100,7 +100,7 @@ tmp <- gframe("Polygon boundaries color", container = group)
 boundaries_color <- gdroplist( c("grey20", "grey60" ), container = tmp, editable = T)
 
 #droplist for text_labels_col ( play with them and choose some nice ones )
-tmp <- gframe("Polygon boundaries color", container = group)
+tmp <- gframe("Text labels color", container = group)
 text_labels_col <- gdroplist( c("black", "orange" ), container = tmp, editable = T)
 
 #plot button
