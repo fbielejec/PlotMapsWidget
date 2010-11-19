@@ -107,10 +107,5 @@ svalue(status_bar) <- "Done!"
 }
 
 
-filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/hiv2Acombitest.out" 
-GetDataset(filename)
-
-
-
 
 
