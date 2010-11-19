@@ -19,17 +19,20 @@ return(locations)
 ############
 
 GetDataset <- function(filename) {
-out        <- read.table(filename, skip=3)[c(1,3,5)]
-names(out) <- c("BF","from","to")
-out$BF     <- as.numeric(do.call("rbind",strsplit(levels(out$BF),"="))[,2])
-out$BF     <- factor(round(out$BF,2))
-out$x      <- locations$Longitude[match( out$from, locations$location )]
-out$y      <- locations$Latitude[match( out$from, locations$location )]
-out$xend   <- locations$Longitude[match( out$to, locations$location )]
-out$yend   <- locations$Latitude[match( out$to, locations$location )]
+	out<-read.table(filename, skip=3)
+	out<-out[c(1,2,5,11,7,9,13,15)]
+	names(out) <- c("I", "BF","from","to","x","y","xend","yend")
+	out$I <- as.numeric(do.call("rbind",strsplit(as.character(out$I),"="))[,2])
+	out$BF <- as.numeric(do.call("rbind",strsplit(as.character(out$BF),"="))[,2])
+	out$BF <- round(out$BF,2)
+	out$BF <- as.factor(out$BF)
+	out$x <- as.numeric(do.call("rbind",strsplit(as.character(out$x),";")))
+	out$y <- as.numeric(do.call("rbind",strsplit(as.character(out$y),")")))
+	out$xend <- as.numeric(do.call("rbind",strsplit(as.character(out$xend),";")))
+	out$yend <- as.numeric(do.call("rbind",strsplit(as.character(out$yend),")")))
 #without this we have some nasty scope problems
-assign("out", out, envir = globalenv())
-return(out)
+	assign("out", out, envir = globalenv())
+	return(out)
 }
 
 ########################
@@ -103,6 +106,9 @@ svalue(status_bar) <- "Done!"
 #    }, error = function(e) svalue(status_bar) <- "Could not finish plotting")
 }
 
+
+filename = "/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/hiv2Acombitest.out" 
+GetDataset(filename)
 
 
 
