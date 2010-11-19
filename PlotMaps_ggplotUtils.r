@@ -19,17 +19,17 @@ return(locations)
 ############
 
 GetDataset <- function(filename) {
-	out<-read.table(filename, skip=3)
-	out<-out[c(1,2,5,11,7,9,13,15)]
-	names(out) <- c("I", "BF","from","to","x","y","xend","yend")
-	out$I <- as.numeric(do.call("rbind",strsplit(as.character(out$I),"="))[,2])
-	out$BF <- as.numeric(do.call("rbind",strsplit(as.character(out$BF),"="))[,2])
+	out <- read.table(filename, skip = 3)
+	out <- out[c(1,2,5,11,7,9,13,15)]
+	names(out) <- c("I", "BF", "from","to","x","y","xend","yend")
+	out$I  <- as.numeric(do.call("rbind", strsplit(as.character(out$I), "="))[,2])
+	out$BF <- as.numeric(do.call("rbind", strsplit(as.character(out$BF), "="))[,2])
 	out$BF <- round(out$BF,2)
 	out$BF <- as.factor(out$BF)
-	out$x <- as.numeric(do.call("rbind",strsplit(as.character(out$x),";")))
-	out$y <- as.numeric(do.call("rbind",strsplit(as.character(out$y),")")))
-	out$xend <- as.numeric(do.call("rbind",strsplit(as.character(out$xend),";")))
-	out$yend <- as.numeric(do.call("rbind",strsplit(as.character(out$yend),")")))
+	out$x  <- as.numeric(do.call("rbind", strsplit(as.character(out$x), ";")))
+	out$y  <- as.numeric(do.call("rbind", strsplit(as.character(out$y), ")")))
+	out$xend <- as.numeric(do.call("rbind", strsplit(as.character(out$xend), ";")))
+	out$yend <- as.numeric(do.call("rbind", strsplit(as.character(out$yend), ")")))
 #without this we have some nasty scope problems
 	assign("out", out, envir = globalenv())
 	return(out)
@@ -39,7 +39,7 @@ GetDataset <- function(filename) {
 #---PARTIAL MAP DATA---#
 ########################
 PlotOnMap <- function(h,...) {
-	
+ 
 	#   tryCatch({
 	
 	locations = GetLocations( svalue(LocFile) )
@@ -49,7 +49,9 @@ PlotOnMap <- function(h,...) {
 	max_lon = svalue(MaxLon)
 	min_lat = svalue(MinLat)
 	max_lat = svalue(MaxLat)
-	
+
+	if(min_lon<max_lon & min_lat<max_lat) {
+		
 	poly_color       <- svalue(poly_color)
 	boundaries_color <- svalue(boundaries_color)
 	text_labels_col  <- svalue(text_labels_col)
@@ -59,7 +61,8 @@ PlotOnMap <- function(h,...) {
 	world.map <- map_data("world")
 	world.map <- world.map[1:5]
 	world.map <- subset(world.map, region != "Antarctica")
-	world.map <- world.map[-grep("Sea|Lake", world.map$region),]
+	world.map <- world.map[-grep("Sea", world.map$region),]
+	world.map <- world.map[-grep("Lake", world.map$region),]
 	world.map <- world.map[-grep("Island", world.map$region),]
 	world.map <- world.map[order(world.map$order), ]
 	
@@ -76,13 +79,12 @@ PlotOnMap <- function(h,...) {
 	)	
 
 	svalue(status_bar) <- "Rendering map data..."
-	plot(1, col="white", xlab="", ylab="", main="", xaxt="n", yaxt="n", type="n", xlim=c(min_lon, max_lon), axes = F)
+	plot(1, col = "white", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", type = "n", xlim = c(min_lon, max_lon), axes = F)
 	MAXSTRING <- max(strwidth(locations$location))
 
 	p.map <- ggplot(MapData, aes(long, lat)) 
 	p.map <- p.map + geom_polygon(aes(long, lat, group = group ), fill = I(poly_color), size = .2, color = I(boundaries_color)) 
 	
-#	mode2  <- svalue(SelectCoord)
 	p.map <- switch(mode,
 			"map" = p.map + coord_map(projection = "tetra", xlim = c(min_lon, max_lon + MAXSTRING), ylim = c(min_lat, max_lat)),
 			"cartesian" =  p.map + coord_cartesian(xlim = c(min_lon, max_lon + MAXSTRING), ylim = c(min_lat, max_lat)),
@@ -90,7 +92,7 @@ PlotOnMap <- function(h,...) {
 			"full globe" = p.map #+ coord_map(projection="mercator")
 	)
 	
-	p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour="white")) 
+	p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour = "white")) 
 	
 	p.map <- p.map + geom_point(data = locations, aes(x = Longitude, y = Latitude), color = I("white"), size = locations_size)	
 	# supress arrows at value 0
@@ -100,9 +102,9 @@ PlotOnMap <- function(h,...) {
 	p.map <- p.map + geom_text(data = locations, aes(x = Longitude, y = jitter(Latitude, 35), label = location), hjust = -0.1, family = 3, vjust = 0.0, size = svalue(text_labels_size), color = text_labels_col) 
 
 	xgrid <- grid.pretty(c(max_lon, min_lon)) 
-	xmaj <- xgrid[-length(xgrid)]
+	xmaj  <- xgrid[-length(xgrid)]
 	ygrid <- grid.pretty(c(max_lat, min_lat)) 
-	ymaj <- ygrid[-length(ygrid)]
+	ymaj  <- ygrid[-length(ygrid)]
 	
 	p.map <- switch(mode,
 			"map" = p.map + scale_y_continuous(breaks = ymaj ) + scale_x_continuous(breaks = xmaj ),
@@ -110,10 +112,15 @@ PlotOnMap <- function(h,...) {
 			"full globe" = p.map + scale_y_continuous(breaks = NA) + scale_x_continuous(breaks = NA)
 	)
 		
-	p.map <- p.map + ylab("")+xlab("")
+	p.map <- p.map + ylab("") + xlab("")
 	print(p.map)
 	svalue(status_bar) <- "Done!"
+
+	} else {
+		svalue(status_bar) <- "Wrong coordinate limits!"
+	} #END: if else block
 	
 	#    }, error = function(e) svalue(status_bar) <- "Could not finish plotting")
-}
+
+} # END:PlotOnMap
 
