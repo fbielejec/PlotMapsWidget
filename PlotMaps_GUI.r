@@ -48,7 +48,7 @@ menulist = list(
 	})
   )
 
-window <- gwindow("PlotMap Widget")
+window <- gwindow("PlotMaps Widget")
 Menu <- gtoolbar(menulist, cont = TRUE, container = window, style = "both")
 
 ## Push buttons to right
@@ -57,15 +57,14 @@ BigGroup <- ggroup(cont = window)
 group <- ggroup(horizontal = FALSE, container = BigGroup)
 add(BigGroup, ggraphics())
 
-#gseparator(container = group)
 
 #####---TEMPORARY---#########################################
 tmp <- gframe("Path to locations file", container = group)
-LocFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/locationHIV2A.txt", 
+LocFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt", 
     width = 15, container = tmp)
 
 tmp <- gframe("Path to bayes factors file", container = group)
-OutFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/WA_HIV2A.out", 
+OutFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/hiv2Acombitest.out", 
     width = 15, container = tmp)
 ######---END TEMPORARY---###################################
 
@@ -111,7 +110,7 @@ add(tmp, gbutton("plot", handler = PlotOnMap))
 status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", 
     container = window)
 
-# Color choice
+# Color choice so far
 #c("burlywood", "grey20", "black", "orange", "grey60")
 
 
