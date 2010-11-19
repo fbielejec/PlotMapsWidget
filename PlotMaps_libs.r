@@ -3,9 +3,7 @@
 #################
 library(ggplot2)
 library(maps)
-library(maptools)
-library(rgdal)
-gpclibPermit() 
+library(cairoDevice) 
 library(gWidgets)
 options(guiToolkit = "RGtk2")
 library(gWidgetsRGtk2)
