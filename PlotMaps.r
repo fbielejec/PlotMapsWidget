@@ -7,7 +7,6 @@
 # add some jitter to labels positions to avoid overplotting
 # add tryCatch block for plotting should display actual errors (caugth from terminal)
 
-
 ###########
 #---RUN---#
 ###########
@@ -18,6 +17,10 @@ setwd("/home/filip/Dropbox/Phyleography/PlotMaps")
 source("PlotMaps_libs.r")
 source("PlotMaps_ggplotUtils.r")
 source("PlotMaps_GUI.r")
+
+
+/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/locationDegrees
+/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/BFtest.out
 
 
 
