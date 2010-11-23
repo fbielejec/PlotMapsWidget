@@ -1,50 +1,7 @@
-####################
-#---PARSING DATA---#
-####################
-#################
-#---locations---#
-#################
-
-GetLocations <- function(filename) {
-locations        <- read.table(filename)
-names(locations) <- c("location", "Latitude","Longitude")
-locations        <- locations[c(1,3,2)]
-#without this we have some nasty scope problems
-assign("locations", locations, envir = globalenv())
-return(locations)
-}
-
-############
-#---.out---#
-############
-
-GetDataset <- function(filename) {
-	out <- read.table(filename, skip = 3)
-	out <- out[c(1,2,5,11,7,9,13,15)]
-	names(out) <- c("I", "BF", "from","to","x","y","xend","yend")
-	out$I  <- as.numeric(do.call("rbind", strsplit(as.character(out$I), "="))[,2])
-	out$BF <- as.numeric(do.call("rbind", strsplit(as.character(out$BF), "="))[,2])
-	out$BF <- round(out$BF,2)
-	out$BF <- as.factor(out$BF)
-	out$x  <- as.numeric(do.call("rbind", strsplit(as.character(out$x), ";")))
-	out$y  <- as.numeric(do.call("rbind", strsplit(as.character(out$y), ")")))
-	out$xend <- as.numeric(do.call("rbind", strsplit(as.character(out$xend), ";")))
-	out$yend <- as.numeric(do.call("rbind", strsplit(as.character(out$yend), ")")))
-#without this we have some nasty scope problems
-	assign("out", out, envir = globalenv())
-	return(out)
-}
-
-########################
-#---PARTIAL MAP DATA---#
-########################
 PlotOnMap <- function(h,...) {
  
 	#   tryCatch({
-	
-	locations = GetLocations( svalue(LocFile) )
-	out = GetDataset( svalue(OutFile) )
-	
+		
 	min_lon = svalue(MinLon)
 	max_lon = svalue(MaxLon)
 	min_lat = svalue(MinLat)
@@ -68,7 +25,6 @@ PlotOnMap <- function(h,...) {
 	
 	offest <- 25
 	
-	# why evaluate this if the mode is "full globe" ?
 	keepMap <- (world.map$lat >= min_lat - offest) & (world.map$lat <= max_lat + offest) & (world.map$long >= min_lon - offest) & (world.map$long <= max_lon + offest)
 	
 	mode <- svalue(SelectCoord)
@@ -114,7 +70,7 @@ PlotOnMap <- function(h,...) {
 		
 	p.map <- p.map + ylab("") + xlab("")
 	print(p.map)
-	svalue(status_bar) <- "Done!"
+	svalue(status_bar) <- "Done."
 
 	} else {
 		svalue(status_bar) <- "Wrong coordinate limits!"
