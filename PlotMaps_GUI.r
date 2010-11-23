@@ -12,7 +12,7 @@ get.eps = function(h, ...) {
         ggsave(h$file)
         #dev.print(device=postscript, file=h$file, onefile=FALSE, paper='special', horizontal=FALSE);
     })
-    svalue(status_bar) <- "Done"
+    svalue(status_bar) <- "Done."
 }
 
 get.png <- function(h, ...) {
@@ -21,7 +21,12 @@ get.png <- function(h, ...) {
         ggsave(h$file)
         #dev.print(png, file=h$file, width=2048, height=1024)
     })
-    svalue(status_bar) <- "Done"
+    svalue(status_bar) <- "Done."
+}
+
+get.out <- function(h, ...) {
+	write.table(out, file = h$file, sep = " ", row.names = F, col.names = T)
+	svalue(status_bar) <- "Done."
 }
 
 SavePlot2Eps <- function(h, ...) {
@@ -38,9 +43,17 @@ SavePlot2Png <- function(h, ...) {
             `png files` = list(patterns = c("*.png"))))
 }
 
+Save2Csv <- function(h, ...) {
+	svalue(status_bar) <- "Saving to CSV..."
+	gfile(text = "Save as csv...", type = "save", initialfilename = "BFtest.out", 
+			handler = get.out, filter = list(`All files` = list(patterns = c("*")), 
+					`csv files` = list(patterns = c("*.out", "*.csv"))))
+}
+
 menulist = list(
     SaveAsEps = gbutton("Save to EPS", handler = SavePlot2Eps),
     SaveAsPng = gbutton("Save to PNG", handler = SavePlot2Png),
+	SaveAsCsv = gbutton("Save to CSV", handler = Save2Csv),
     help = gbutton("Help", handler = HelpHandler),
     separator=gseparator(),
     quit = gbutton("Quit", handler = function(h, ...) {
@@ -48,6 +61,7 @@ menulist = list(
 	})
   )
 
+  
 window <- gwindow("PlotMaps Widget")
 Menu <- gtoolbar(menulist, cont = TRUE, container = window, style = "both")
 
@@ -57,16 +71,17 @@ BigGroup <- ggroup(cont = window)
 group <- ggroup(horizontal = FALSE, container = BigGroup)
 add(BigGroup, ggraphics())
 
+tmp <- gframe("Path to log file", container = group)
+LogFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log", 
+		width = 15, container = tmp)
 
-#####---TEMPORARY---#########################################
 tmp <- gframe("Path to locations file", container = group)
 LocFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt", 
     width = 15, container = tmp)
 
-tmp <- gframe("Path to bayes factors file", container = group)
-OutFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/hiv2Acombitest.out", 
-    width = 15, container = tmp)
-######---END TEMPORARY---###################################
+#coordinate system selection from drop-down list
+tmp <- gframe("Select coordinates", container = group)
+SelectCoord <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
 
 tmp <- gframe("min/max longitude", container = group)
 MinLon = gedit("-17.0", coerce.with = as.numeric, 
@@ -77,12 +92,8 @@ MaxLon = gedit("7.0", coerce.with = as.numeric, width = 5,
 tmp <- gframe("min/max latitude", container = group)
 MinLat = gedit("4.0", coerce.with = as.numeric, width = 5, 
     container = tmp)
-MaxLat = gedit("15.5", coerce.with = as.numeric, width = 5, 
+MaxLat = gedit("15.0", coerce.with = as.numeric, width = 5, 
     container = tmp)
-
-#coordinate system selection from drop-down list
-tmp <- gframe("Select coordinates", container = group)
-SelectCoord <- gdroplist(c("map", "cartesian"), container = tmp)
 
 #slider to choose size of locations points
 tmp <- gframe("Points / font / arrows size", container = group)
@@ -103,8 +114,10 @@ tmp <- gframe("Text labels color", container = group)
 text_labels_col <- gdroplist( c("black", "orange" ), container = tmp, editable = T)
 
 #plot button
-tmp <- gframe("Plot data on map", container = group)
-add(tmp, gbutton("plot", handler = PlotOnMap))
+tmp <- gframe("BF cutoff / Do BF test / Plot data", container = group)
+SpecifyBFCutoff <- gedit("3.0", coerce.with = as.numeric, width = 3, container = tmp) 
+add(tmp, gbutton("do BF", handler = RateIndicatorBF) )
+add(tmp, gbutton("plot", handler = PlotOnMap) )
 
 #status bar
 status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", 
