@@ -15,12 +15,12 @@
 setwd("/home/filip/Dropbox/Phyleography/PlotMaps")
 
 source("PlotMaps_libs.r")
+source("RateIndicatorBF.R")
 source("PlotMaps_ggplotUtils.r")
 source("PlotMaps_GUI.r")
 
 
-/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/locationDegrees
-/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/BFtest.out
+
 
 
 
