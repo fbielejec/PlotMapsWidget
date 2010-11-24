@@ -6,7 +6,7 @@ HelpHandler <- function(h, ...) {
 }
 
 
-get.eps = function(h, ...) {		
+get.eps <- function(h, ...) {		
 	tryCatch({    				
 				local({
         dev.set(2)
@@ -60,10 +60,20 @@ Save2Csv <- function(h, ...) {
 					`csv files` = list(patterns = c("*.out", "*.csv"))))
 }
 
-menulist = list(
-    SaveAsEps = gbutton("Save to EPS", handler = SavePlot2Eps),
-    SaveAsPng = gbutton("Save to PNG", handler = SavePlot2Png),
-	SaveAsCsv = gbutton("Save to CSV", handler = Save2Csv),
+#not yet implemented:
+ExitGracefully <- function(h,...) {
+#	closeSocketClients(sockets = "all", serverport = 8888)
+#	stopSocketServer()
+#	break
+	svalue(status_bar) <- "TODO"
+}
+
+
+menulist <- list(
+	cancel = gbutton("cancel", handler = ExitGracefully),
+    save_ss_eps = gbutton("Save to EPS", handler = SavePlot2Eps),
+    save_as_png = gbutton("Save to PNG", handler = SavePlot2Png),
+	save_as_csv = gbutton("Save to CSV", handler = Save2Csv),
     help = gbutton("Help", handler = HelpHandler),
     separator=gseparator(),
     quit = gbutton("Quit", handler = function(h, ...) {
@@ -73,13 +83,11 @@ menulist = list(
 
   
 window <- gwindow("PlotMaps Widget")
-Menu <- gtoolbar(menulist, cont = TRUE, container = window, style = "both")
+menu  <- gtoolbar(menulist, cont = TRUE, container = window, style = "both")
 
-## Push buttons to right
-#addSpring(menulist)
-BigGroup <- ggroup(cont = window)
-group <- ggroup(horizontal = FALSE, container = BigGroup)
-add(BigGroup, ggraphics())
+big_group <- ggroup(cont = window)
+group <- ggroup(horizontal = FALSE, container = big_group)
+add(big_group, ggraphics())
 
 tmp <- gframe("Path to log file", container = group)
 log_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log", 
@@ -92,19 +100,15 @@ loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/l
 #coordinate system selection from drop-down list
 tmp <- gframe("Arrow tips / Coordinates", container = group)
 select_arrow_tips <- gdroplist(c("last", "first", "both", "none"), container = tmp)
-select_coord <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
+select_coord      <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
 
 tmp <- gframe("min/max longitude", container = group)
-min_lon = gedit("-17.0", coerce.with = as.numeric, 
-    width = 5, container = tmp)
-max_lon = gedit("7.0", coerce.with = as.numeric, width = 5, 
-    container = tmp)
+min_lon = gedit("-17.0", coerce.with = as.numeric, width = 5, container = tmp)
+max_lon = gedit("7.0", coerce.with = as.numeric, width = 5, container = tmp)
 
 tmp <- gframe("min/max latitude", container = group)
-min_lat = gedit("4.0", coerce.with = as.numeric, width = 5, 
-    container = tmp)
-max_lat = gedit("15.0", coerce.with = as.numeric, width = 5, 
-    container = tmp)
+min_lat = gedit("4.0", coerce.with = as.numeric, width = 5, container = tmp)
+max_lat = gedit("15.0", coerce.with = as.numeric, width = 5, container = tmp)
 
 #slider to choose size of locations points
 tmp <- gframe("Points / font / arrows size", container = group)
@@ -131,7 +135,6 @@ add(tmp, gbutton("do BF", handler = RateIndicatorBF) )
 add(tmp, gbutton("plot", handler = PlotOnMap) )
 
 #status bar
-status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", 
-    container = window)
+status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", container = window)
 
 
