@@ -24,22 +24,22 @@ RateIndicatorBF <- function(h,...){
 	   tryCatch({
 				   
 svalue(status_bar) <- "Computing..."
-loc                <- read.table(svalue(LocFile), head=FALSE)
-Ind                <- read.table(svalue(LogFile), head=TRUE)
+loc                <- read.table(svalue(loc_file), head=FALSE)
+Ind                <- read.table(svalue(log_file), head=TRUE)
 
 # hard-coded for now
 BurnIn    = 0.1
-BFcutoff  = svalue(SpecifyBFCutoff)
+BFcutoff  = svalue(specify_bf_cutoff)
 
-Ind <- Ind[grep("indicators", names(Ind))]
+Ind    <- Ind[grep("indicators", names(Ind))]
 delete <- round(dim(Ind)[1] * BurnIn)
 Ind    <- Ind[-c(1:delete),]
 
 
 K <- dim(loc)[1]
-if( ncol(Ind)==K*(K-1) ) {
+if( ncol(Ind) == K*(K - 1) ) {
 	symmetrical <- FALSE
-} else if (ncol(Ind)==(K*(K-1))/2) {
+} else if (ncol(Ind) == (K*(K - 1)) / 2) {
 	symmetrical <- TRUE
 } else {
 	cat("the number of rate indicators does not match the number of locations! \n")
@@ -65,10 +65,10 @@ numberOfRatesMultiplier <- switch(as.character(symmetrical),
 )	
 
 
-qk <- (log(2) + K - 1) / ( (K*(K-1)) / numberOfRatesMultiplier )
+qk <- (log(2) + K - 1) / ((K*(K - 1))/numberOfRatesMultiplier )
 pk <- apply(Ind, 2, mean)
 
-out <- (pk/(1-pk)) / (qk/(1-qk))
+out <- (pk/(1 - pk)) / (qk/(1 - qk))
 
 data <- data.frame(
 I = pk[which(out > BFcutoff)],
@@ -76,13 +76,13 @@ BF = out[which(out > BFcutoff)],
 from = do.call("rbind", strsplit(names(out[which(out > BFcutoff)]), ":"))[,1],
 to = do.call("rbind", strsplit(names(out[which(out > BFcutoff)]), ":"))[,2]
 )
-data$x = loc$V3[ match(data$from, loc$V1)  ]
-data$y = loc$V2[ match(data$from, loc$V1)  ]
+data$x    = loc$V3[ match(data$from, loc$V1)  ]
+data$y    = loc$V2[ match(data$from, loc$V1)  ]
 data$xend = loc$V3[ match(data$to, loc$V1)  ]
 data$yend = loc$V2[ match(data$to, loc$V1)  ]
-data$I <- round(data$I, 2)
+data$I  <- round(data$I, 2)
 data$BF <- round(data$BF, 2)
-data$I <- as.factor(data$I)
+data$I  <- as.factor(data$I)
 data$BF <- as.factor(data$BF)
 row.names(data) <- NULL
 
