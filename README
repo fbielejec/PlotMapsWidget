@@ -1,5 +1,5 @@
                         PlotMaps Widget v1.0
- 
+
  
   This is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
@@ -11,6 +11,12 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU Lesser General Public License for more details.
  
+ 
+___________________________________________________________________________
+                            PURPOSE
+                            
+R Widget to support processing and visualizing BEAST's phylogeographic models.                             
+
 
 ________________________________________________________________________________
                             RUNNING
@@ -30,10 +36,17 @@ ________________________________________________________________________________
                             TODO
 # Add some jitter to labels positions to avoid overplotting (still not perfect)                                                      
 # Add output to kml option
-# Dim lat/long fields if user chooses full globe coordinates                   
-# Add tick marks for full globe plot (but still no grid)                   
-# TryCatch blocks for saving output
-# Move svalues from gui to handlers 
-# option to choose arrow tips (first, last, both, none)
-# change gui names (underscores naming convention)
-# save BF and I as numerical (change to factors in plot utilities )
+# Dim lat/long fields if user chooses full globe coordinates                                  
+# Option to choose arrow tips (first, last, both, none)
+# Change gui names (underscores naming convention)
+# Save BF and I as numerical (change to factors in plot utilities )
+# Add cancel current job functionality
+
+
+________________________________________________________________________________
+                            BUGS
+                            
+# Doesn't display messages when computing BF
+
+
+                            
