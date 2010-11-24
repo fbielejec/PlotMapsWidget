@@ -2,10 +2,10 @@ PlotOnMap <- function(h,...) {
  
 	#   tryCatch({
 		
-	MinLon = svalue(min_lon)
-	MaxLon = svalue(max_lon)
-	MinLat = svalue(min_lat)
-	MaxLat = svalue(max_lat)
+	MinLon <- svalue(min_lon)
+	MaxLon <- svalue(max_lon)
+	MinLat <- svalue(min_lat)
+	MaxLat <- svalue(max_lat)
 
 	if(MinLon < MaxLon & MinLat < MaxLat) {
 		
@@ -18,24 +18,26 @@ PlotOnMap <- function(h,...) {
 	world.map <- map_data("world")
 	world.map <- world.map[1:5]
 	world.map <- subset(world.map, region != "Antarctica")
-	world.map <- world.map[-grep("Sea", world.map$region),]
-	world.map <- world.map[-grep("Lake", world.map$region),]
-	world.map <- world.map[-grep("Island", world.map$region),]
+	world.map <- world.map[-grep("Sea", world.map$region), ]
+	world.map <- world.map[-grep("Lake", world.map$region), ]
+	world.map <- world.map[-grep("Island", world.map$region), ]
 	world.map <- world.map[order(world.map$order), ]
 	
 	offest <- 25
 	
-	keepMap <- (world.map$lat >= MinLat - offest) & (world.map$lat <= MaxLat + offest) & (world.map$long >= MinLon - offest) & (world.map$long <= MaxLon + offest)
+	keepMap <- (world.map$lat >= MinLat - offest) & (world.map$lat <= MaxLat + offest) & 
+			   (world.map$long >= MinLon - offest) & (world.map$long <= MaxLon + offest)
 	
 	coord_mode <- svalue(select_coord)
 	MapData <- switch(coord_mode,
-			"map" = world.map[keepMap,],
-			"cartesian" =  world.map[keepMap,],
+			"map" = world.map[keepMap, ],
+			"cartesian" =  world.map[keepMap, ],
 			"full globe" = world.map
 	)	
 
 	svalue(status_bar) <- "Rendering map data..."
-	plot(1, col = "white", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", type = "n", xlim = c(MinLon, MaxLon), axes = F)
+	plot(1, col = "white", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", type = "n", 
+			xlim = c(MinLon, MaxLon), axes = F)
 	MAXSTRING <- max(strwidth(locations$location))
 
 	p.map <- ggplot(MapData, aes(long, lat)) 
@@ -53,7 +55,7 @@ PlotOnMap <- function(h,...) {
 	p.map <- p.map + geom_point(data = locations, aes(x = Longitude, y = Latitude), color = I("white"), size = locations_size)	
 	
 	# supress arrows at value 0
-	if(svalue(arrow_size)!=0) {		
+	if(svalue(arrow_size) != 0) {		
 		arrow_mode <- svalue(select_arrow_tips)
 		p.map <- switch(arrow_mode, 
 				"last"  = p.map + geom_segment(data = out, aes(x = x, y = y, xend = xend, yend = yend, color = BF ), size = I(arrow_size), arrow = arrow(length = unit(0.25,"cm"), ends="last" ) ), 
@@ -71,7 +73,8 @@ PlotOnMap <- function(h,...) {
 		ygrid <- grid.pretty(c(MaxLat, MinLat)) 
 		ymaj  <- ygrid[-length(ygrid)]
 }
-	
+
+
 	if(coord_mode == "full globe") {	
 		theme_null <- theme_update(
 			panel.grid.major = theme_blank(),
