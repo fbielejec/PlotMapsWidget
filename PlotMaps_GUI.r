@@ -6,44 +6,34 @@ HelpHandler <- function(h, ...) {
 }
 
 
-get.eps = function(h, ...) {	
-	
-	tryCatch({    
-				
+get.eps = function(h, ...) {		
+	tryCatch({    				
 				local({
         dev.set(2)
         ggsave(h$file)
         #dev.print(device=postscript, file=h$file, onefile=FALSE, paper='special', horizontal=FALSE);
     })
-
 	svalue(status_bar) <- "Done."
-
 	}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
 
-get.png <- function(h, ...) {
-	
-	tryCatch({   
-				
+
+get.png <- function(h, ...) {	
+	tryCatch({   				
 				local({
         dev.set(2)
         ggsave(h$file)
         #dev.print(png, file=h$file, width=2048, height=1024)
     })
-
     svalue(status_bar) <- "Done."
-
 	}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
 
 
 get.csv <- function(h, ...) {
-
-	tryCatch({  
-	
+	tryCatch({  	
 				write.table(out, file = h$file, sep = " ", row.names = F, col.names = T)
-				svalue(status_bar) <- "Done."
-			
+				svalue(status_bar) <- "Done."			
 			}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
 
@@ -100,7 +90,8 @@ loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/l
     width = 15, container = tmp)
 
 #coordinate system selection from drop-down list
-tmp <- gframe("Select coordinates", container = group)
+tmp <- gframe("Arrow tips / Coordinates", container = group)
+select_arrow_tips <- gdroplist(c("last", "first", "both", "none"), container = tmp)
 select_coord <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
 
 tmp <- gframe("min/max longitude", container = group)
@@ -117,9 +108,9 @@ max_lat = gedit("15.0", coerce.with = as.numeric, width = 5,
 
 #slider to choose size of locations points
 tmp <- gframe("Points / font / arrows size", container = group)
-locations_size   <- gspinbutton(from = 0, to = 10, by = 1, value = 7, container = tmp)
-text_labels_size <- gspinbutton(from = 0, to = 10, by = 1, value = 3, container = tmp)
-arrow_size       <- gspinbutton(from = 0, to = 10, by = 1, value = 1, container = tmp)
+locations_size   <- gspinbutton(from = 0, to = 10, by = 0.5, value = 7, container = tmp)
+text_labels_size <- gspinbutton(from = 0, to = 10, by = 0.5, value = 3, container = tmp)
+arrow_size       <- gspinbutton(from = 0, to = 10, by = 0.5, value = 1, container = tmp)
 
 #droplist for poly_color ( play with them and choose some nice ones )
 tmp <- gframe("Polygons color", container = group)
@@ -127,7 +118,7 @@ poly_color <- gdroplist( c("burlywood", "grey20" ), container = tmp, editable = 
 
 #droplist for boundaries_color ( play with them and choose some nice ones )
 tmp <- gframe("Polygon boundaries color", container = group)
-boundaries_color <- gdroplist( c("grey20", "grey60" ), container = tmp, editable = T)
+boundaries_color <- gdroplist( c("grey60", "grey20" ), container = tmp, editable = T)
 
 #droplist for text_labels_col ( play with them and choose some nice ones )
 tmp <- gframe("Text labels color", container = group)
@@ -135,17 +126,12 @@ text_labels_col <- gdroplist( c("black", "orange" ), container = tmp, editable =
 
 #plot button
 tmp <- gframe("BF cutoff / BF test / Plot data", container = group)
-specify_bf_cutoff <- gedit("3.0", coerce.with = as.numeric, width = 3, container = tmp) 
+specify_bf_cutoff <- gedit("3.0", coerce.with = as.numeric, width = 4, container = tmp) 
 add(tmp, gbutton("do BF", handler = RateIndicatorBF) )
 add(tmp, gbutton("plot", handler = PlotOnMap) )
 
 #status bar
 status_bar <- gstatusbar("Welcome. Expand widget for full screen view.", 
     container = window)
-
-# Color choice so far
-#c("burlywood", "grey20", "black", "orange", "grey60")
-
-
 
 
