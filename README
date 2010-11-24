@@ -2,7 +2,7 @@
 
  
   This is free software; you can redistribute it and/or modify
-  it under the terms of the GNU Lesser General Public License as
+  it under the terms of the GNU General Public License as
   published by the Free Software Foundation; either version 2
   of the License, or (at your option) any later version.
  
@@ -22,7 +22,6 @@ ________________________________________________________________________________
                             RUNNING
 
 Widget needs the following R packages installed:
-* combinat
 * ggplot2
 * maps
 * gWidgets
@@ -34,8 +33,8 @@ written for RGtk2 (probably not tcltk compliant, however I have not tested it).
 
 ________________________________________________________________________________
                             TODO
-# Add some jitter to labels positions to avoid overplotting (still not perfect)       
-# Work on speedups (read.table, paralell computations )                                               
+                            
+# Add some jitter to labels positions to avoid overplotting (still not perfect)                                                   
 # Add output to kml option
 # Dim lat/long fields if user chooses full globe coordinates                                  
 # Save BF and I as numerical (change to factors in plot utilities )
@@ -45,7 +44,7 @@ ________________________________________________________________________________
                    variables, GUI objects: small letters with underscores
                    =        : when wrapped with another object or instruction/statement
                    <-       : standalone, updating status bar values 
-
+# Work on speedups (sqldf, paralell computations )   
 ________________________________________________________________________________
                             BUGS
                             
