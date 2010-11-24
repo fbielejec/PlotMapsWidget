@@ -6,28 +6,47 @@ HelpHandler <- function(h, ...) {
 }
 
 
-get.eps = function(h, ...) {
-    local({
+get.eps = function(h, ...) {	
+	
+	tryCatch({    
+				
+				local({
         dev.set(2)
         ggsave(h$file)
         #dev.print(device=postscript, file=h$file, onefile=FALSE, paper='special', horizontal=FALSE);
     })
-    svalue(status_bar) <- "Done."
+
+	svalue(status_bar) <- "Done."
+
+	}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
 
 get.png <- function(h, ...) {
-    local({
+	
+	tryCatch({   
+				
+				local({
         dev.set(2)
         ggsave(h$file)
         #dev.print(png, file=h$file, width=2048, height=1024)
     })
+
     svalue(status_bar) <- "Done."
+
+	}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
 
-get.out <- function(h, ...) {
-	write.table(out, file = h$file, sep = " ", row.names = F, col.names = T)
-	svalue(status_bar) <- "Done."
+
+get.csv <- function(h, ...) {
+
+	tryCatch({  
+	
+				write.table(out, file = h$file, sep = " ", row.names = F, col.names = T)
+				svalue(status_bar) <- "Done."
+			
+			}, error = function(e) svalue(status_bar) <- "Could not save!")
 }
+
 
 SavePlot2Eps <- function(h, ...) {
     svalue(status_bar) <- "Saving to EPS..."
@@ -35,6 +54,7 @@ SavePlot2Eps <- function(h, ...) {
         handler = get.eps, filter = list(`All files` = list(patterns = c("*")), 
             `eps files` = list(patterns = c("*.eps"))))
 }
+
 
 SavePlot2Png <- function(h, ...) {
     svalue(status_bar) <- "Saving to PNG..."
@@ -46,7 +66,7 @@ SavePlot2Png <- function(h, ...) {
 Save2Csv <- function(h, ...) {
 	svalue(status_bar) <- "Saving to CSV..."
 	gfile(text = "Save as csv...", type = "save", initialfilename = "BFtest.out", 
-			handler = get.out, filter = list(`All files` = list(patterns = c("*")), 
+			handler = get.csv, filter = list(`All files` = list(patterns = c("*")), 
 					`csv files` = list(patterns = c("*.out", "*.csv"))))
 }
 
@@ -72,27 +92,27 @@ group <- ggroup(horizontal = FALSE, container = BigGroup)
 add(BigGroup, ggraphics())
 
 tmp <- gframe("Path to log file", container = group)
-LogFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log", 
+log_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log", 
 		width = 15, container = tmp)
 
 tmp <- gframe("Path to locations file", container = group)
-LocFile = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt", 
+loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt", 
     width = 15, container = tmp)
 
 #coordinate system selection from drop-down list
 tmp <- gframe("Select coordinates", container = group)
-SelectCoord <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
+select_coord <- gdroplist(c("map", "cartesian", "full globe"), container = tmp)
 
 tmp <- gframe("min/max longitude", container = group)
-MinLon = gedit("-17.0", coerce.with = as.numeric, 
+min_lon = gedit("-17.0", coerce.with = as.numeric, 
     width = 5, container = tmp)
-MaxLon = gedit("7.0", coerce.with = as.numeric, width = 5, 
+max_lon = gedit("7.0", coerce.with = as.numeric, width = 5, 
     container = tmp)
 
 tmp <- gframe("min/max latitude", container = group)
-MinLat = gedit("4.0", coerce.with = as.numeric, width = 5, 
+min_lat = gedit("4.0", coerce.with = as.numeric, width = 5, 
     container = tmp)
-MaxLat = gedit("15.0", coerce.with = as.numeric, width = 5, 
+max_lat = gedit("15.0", coerce.with = as.numeric, width = 5, 
     container = tmp)
 
 #slider to choose size of locations points
@@ -114,8 +134,8 @@ tmp <- gframe("Text labels color", container = group)
 text_labels_col <- gdroplist( c("black", "orange" ), container = tmp, editable = T)
 
 #plot button
-tmp <- gframe("BF cutoff / Do BF test / Plot data", container = group)
-SpecifyBFCutoff <- gedit("3.0", coerce.with = as.numeric, width = 3, container = tmp) 
+tmp <- gframe("BF cutoff / BF test / Plot data", container = group)
+specify_bf_cutoff <- gedit("3.0", coerce.with = as.numeric, width = 3, container = tmp) 
 add(tmp, gbutton("do BF", handler = RateIndicatorBF) )
 add(tmp, gbutton("plot", handler = PlotOnMap) )
 
