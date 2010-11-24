@@ -2,12 +2,12 @@ PlotOnMap <- function(h,...) {
  
 	#   tryCatch({
 		
-	min_lon = svalue(MinLon)
-	max_lon = svalue(MaxLon)
-	min_lat = svalue(MinLat)
-	max_lat = svalue(MaxLat)
+	MinLon = svalue(min_lon)
+	MaxLon = svalue(max_lon)
+	MinLat = svalue(min_lat)
+	MaxLat = svalue(max_lat)
 
-	if(min_lon<max_lon & min_lat<max_lat) {
+	if(MinLon < MaxLon & MinLat < MaxLat) {
 		
 	poly_color       <- svalue(poly_color)
 	boundaries_color <- svalue(boundaries_color)
@@ -25,9 +25,9 @@ PlotOnMap <- function(h,...) {
 	
 	offest <- 25
 	
-	keepMap <- (world.map$lat >= min_lat - offest) & (world.map$lat <= max_lat + offest) & (world.map$long >= min_lon - offest) & (world.map$long <= max_lon + offest)
+	keepMap <- (world.map$lat >= MinLat - offest) & (world.map$lat <= MaxLat + offest) & (world.map$long >= MinLon - offest) & (world.map$long <= MaxLon + offest)
 	
-	mode <- svalue(SelectCoord)
+	mode <- svalue(select_coord)
 	MapData <- switch(mode,
 			"map" = world.map[keepMap,],
 			"cartesian" =  world.map[keepMap,],
@@ -35,20 +35,20 @@ PlotOnMap <- function(h,...) {
 	)	
 
 	svalue(status_bar) <- "Rendering map data..."
-	plot(1, col = "white", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", type = "n", xlim = c(min_lon, max_lon), axes = F)
+	plot(1, col = "white", xlab = "", ylab = "", main = "", xaxt = "n", yaxt = "n", type = "n", xlim = c(MinLon, MaxLon), axes = F)
 	MAXSTRING <- max(strwidth(locations$location))
 
 	p.map <- ggplot(MapData, aes(long, lat)) 
 	p.map <- p.map + geom_polygon(aes(long, lat, group = group ), fill = I(poly_color), size = .2, color = I(boundaries_color)) 
 	
 	p.map <- switch(mode,
-			"map" = p.map + coord_map(projection = "tetra", xlim = c(min_lon, max_lon + MAXSTRING), ylim = c(min_lat, max_lat)),
-			"cartesian" =  p.map + coord_cartesian(xlim = c(min_lon, max_lon + MAXSTRING), ylim = c(min_lat, max_lat)),
+			"map" = p.map + coord_map(projection = "tetra", xlim = c(MinLon, MaxLon + MAXSTRING), ylim = c(MinLat, MaxLat)),
+			"cartesian" =  p.map + coord_cartesian(xlim = c(MinLon, MaxLon + MAXSTRING), ylim = c(MinLat, MaxLat)),
 			# map coordinates cause problem:
 			"full globe" = p.map #+ coord_map(projection="mercator")
 	)
 	
-	p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour = "white")) 
+
 	
 	p.map <- p.map + geom_point(data = locations, aes(x = Longitude, y = Latitude), color = I("white"), size = locations_size)	
 	# supress arrows at value 0
@@ -57,19 +57,35 @@ PlotOnMap <- function(h,...) {
 	}
 	p.map <- p.map + geom_text(data = locations, aes(x = Longitude, y = jitter(Latitude, 35), label = location), hjust = -0.1, family = 3, vjust = 0.0, size = svalue(text_labels_size), color = text_labels_col) 
 
-	xgrid <- grid.pretty(c(max_lon, min_lon)) 
-	xmaj  <- xgrid[-length(xgrid)]
-	ygrid <- grid.pretty(c(max_lat, min_lat)) 
-	ymaj  <- ygrid[-length(ygrid)]
 	
+	if(mode %in% c("map", "cartesian") ) {
+	
+		xgrid <- grid.pretty(c(MaxLon, MinLon)) 
+		xmaj  <- xgrid[-length(xgrid)]
+		ygrid <- grid.pretty(c(MaxLat, MinLat)) 
+		ymaj  <- ygrid[-length(ygrid)]
+}
+	
+	if(mode == "full globe") {
+	
+		theme_null <- theme_update(
+			panel.grid.major = theme_blank(),
+			panel.grid.minor = theme_blank()
+	)
+}
+
+
 	p.map <- switch(mode,
 			"map" = p.map + scale_y_continuous(breaks = ymaj ) + scale_x_continuous(breaks = xmaj ),
 			"cartesian" = p.map + scale_y_continuous(breaks = ymaj ) + scale_x_continuous(breaks = xmaj ),
-			"full globe" = p.map + scale_y_continuous(breaks = NA) + scale_x_continuous(breaks = NA)
+			"full globe" = p.map + theme_set(theme_null)
 	)
-		
+	
+	p.map <- p.map + opts(panel.background = theme_rect(fill = "lightblue", colour = "white")) 	
 	p.map <- p.map + ylab("") + xlab("")
+	
 	print(p.map)
+	
 	svalue(status_bar) <- "Done."
 
 	} else {
