@@ -29,8 +29,10 @@ Widget needs the following R packages installed:
 
 
 Run it by executing PlotMaps.r script (remember to adjust the path). Widget is 
-written for RGtk2 (probably not tcltk compliant, however I have not tested it). 
+written for RGtk2. On Windows it will need GTK+ Runtime Environment installed, 
+to be dowloaded for example here:
 
+http://gtk-win.sourceforge.net/home/index.php/Downloads
 ________________________________________________________________________________
                             TODO
                             
@@ -40,10 +42,13 @@ ________________________________________________________________________________
 # Save BF and I as numerical (change to factors in plot utilities )
 # Add cancel current job functionality
 # Coding convention: 
-                                functions: large letter without underscores
+                   functions: large letter without underscores (CamelCase)
                    variables, GUI objects: small letters with underscores
-                   =        : when wrapped with another object or instruction/statement
-                   <-       : standalone, updating status bar values 
+                   =                     : when wrapped with another object or 
+                                           instruction/statement
+                   <-                    : standalone, updating status bar values 
+                   spaces: after #, after coma, around all binary operators 
+                           (=, +, -, <- ,etc)
 # Work on speedups (sqldf, paralell computations )   
 ________________________________________________________________________________
                             BUGS
