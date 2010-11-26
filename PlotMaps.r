@@ -6,7 +6,8 @@
 setwd("/home/filip/Dropbox/Phyleography/PlotMaps")
 
 source("PlotMaps_libs.r")
-source("combinatorics.R")
+source("Combinatorics.R")
 source("RateIndicatorBF.R")
 source("PlotMaps_ggplotUtils.r")
+source("GetKML.R")
 source("PlotMaps_GUI.r")
