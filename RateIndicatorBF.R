@@ -80,6 +80,7 @@ data$x    <- loc$V3[ match(data$from, loc$V1)  ]
 data$y    <- loc$V2[ match(data$from, loc$V1)  ]
 data$xend <- loc$V3[ match(data$to, loc$V1)  ]
 data$yend <- loc$V2[ match(data$to, loc$V1)  ]
+# move to ggplotUtils:
 data$I    <- round(data$I, 2)
 data$BF   <- round(data$BF, 2)
 data$I    <- as.factor(data$I)
