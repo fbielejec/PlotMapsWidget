@@ -60,6 +60,13 @@ Save2Csv <- function(h, ...) {
 					`csv files` = list(patterns = c("*.out", "*.csv"))))
 }
 
+Save2KML <- function(h, ...) {
+	svalue(status_bar) <- "Saving to KML..."
+	gfile(text = "Save as csv...", type = "save", initialfilename = "output.kml", 
+			handler = GetKML, filter = list(`All files` = list(patterns = c("*")), 
+					`csv files` = list(patterns = c("*.kml"))))
+}
+
 # not yet implemented:
 ExitGracefully <- function(h,...) {
 
@@ -69,7 +76,8 @@ ExitGracefully <- function(h,...) {
 
 menulist <- list(
 	cancel = gbutton("cancel", handler = ExitGracefully),
-    save_ss_eps = gbutton("Save to EPS", handler = SavePlot2Eps),
+	save_as_kml = gbutton("Save to KML", handler = Save2KML),
+    save_as_eps = gbutton("Save to EPS", handler = SavePlot2Eps),
     save_as_png = gbutton("Save to PNG", handler = SavePlot2Png),
 	save_as_csv = gbutton("Save to CSV", handler = Save2Csv),
     help = gbutton("Help", handler = HelpHandler),
