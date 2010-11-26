@@ -1,4 +1,4 @@
-                        PlotMaps Widget
+                        PlotMaps Widget v1.0
 
  
   This is free software; you can redistribute it and/or modify
@@ -51,8 +51,8 @@ ________________________________________________________________________________
                    =                     : when wrapped with another object or 
                                            instruction/statement
                    <-                    : standalone, updating status bar values 
-                   spaces: after #, after coma, around all binary operators 
-                           (=, +, -, <- ,etc)
+                   spaces: after #, coma, around all binary operators 
+                           (=, +, -, <- , etc)
 # Work on speedups (sqldf, paralell computations )   
 ________________________________________________________________________________
                             BUGS
