@@ -24,8 +24,7 @@ ________________________________________________________________________________
 Widget needs the following R packages installed:
 * ggplot2
 * maps
-* maptools
-* sp
+* brew
 * gWidgets
 * gWidgetsRGtk2
 
@@ -39,7 +38,7 @@ ________________________________________________________________________________
                             TODO
                             
 # Add some jitter to labels positions to avoid overplotting (still not perfect)                                                   
-# Improve output to kml option
+# Improve output to kml option (colors mapping, line names)
 # Dim lat/long fields if user chooses full globe coordinates                                  
 # Save BF and I as numerical (change to factors in plot utilities )
 # Add cancel current job functionality
