@@ -25,21 +25,21 @@ RateIndicatorBF <- function(h,...){
 				   
 svalue(status_bar) <- "Computing..."
 loc                <- read.table(svalue(loc_file), head = FALSE)
-Ind                <- read.table(svalue(log_file), head = TRUE)
+indicators         <- read.table(svalue(log_file), head = TRUE, sep = "\t")
 
 # hard-coded for now
-BurnIn    <- 0.1
-BFcutoff  <- svalue(specify_bf_cutoff)
+burn_in    <- 0.1
+bf_cutoff  <- svalue(specify_bf_cutoff)
 
-Ind    <- Ind[grep("indicators", names(Ind))]
-delete <- round(dim(Ind)[1] * BurnIn)
-Ind    <- Ind[-c(1:delete), ]
+indicators    <- indicators[grep("indicators", names(indicators))]
+delete <- round(dim(indicators)[1] * burn_in)
+indicators    <- indicators[-c(1:delete), ]
 
 
 K <- dim(loc)[1]
-if( ncol(Ind) == K*(K - 1) ) {
+if( ncol(indicators) == K*(K - 1) ) {
 	symmetrical = FALSE
-} else if (ncol(Ind) == (K*(K - 1)) / 2) {
+} else if (ncol(indicators) == (K*(K - 1)) / 2) {
 	symmetrical = TRUE
 } else {
 	svalue(status_bar) <- "the number of rate indicators does not match the number of locations!"
@@ -51,30 +51,30 @@ combinations <- combn(variables, 2)
 combinations <- paste(combinations[1, ], combinations[2, ], sep=":" )
 
 # recognise here, paste accordingly 1 or 2
-ColNames <- switch(as.character(symmetrical),
+col_names <- switch(as.character(symmetrical),
 		"TRUE"  =  combinations,
 		"FALSE" = rep(combinations, 2)
 )	
-names(Ind) <- ColNames
+names(indicators) <- col_names
 
 
 # divide by 1 or 2 accordingly
-numberOfRatesMultiplier <- switch(as.character(symmetrical),
+nr_of_rates_multiplier <- switch(as.character(symmetrical),
 		"TRUE"  = 2,
 		"FALSE" = 1
 )	
 
 
-qk <- (log(2) + K - 1) / ((K*(K - 1))/numberOfRatesMultiplier )
-pk <- apply(Ind, 2, mean)
+qk <- (log(2) + K - 1) / ((K*(K - 1))/nr_of_rates_multiplier )
+pk <- apply(indicators, 2, mean)
 
 out <- (pk/(1 - pk)) / (qk/(1 - qk))
 
 data <- data.frame(
-I = pk[which(out > BFcutoff)],
-BF = out[which(out > BFcutoff)],
-from = do.call("rbind", strsplit(names(out[which(out > BFcutoff)]), ":"))[,1],
-to = do.call("rbind", strsplit(names(out[which(out > BFcutoff)]), ":"))[,2]
+I = pk[which(out > bf_cutoff )],
+BF = out[which(out > bf_cutoff )],
+from = do.call("rbind", strsplit(names(out[which(out > bf_cutoff )]), ":"))[,1],
+to = do.call("rbind", strsplit(names(out[which(out > bf_cutoff )]), ":"))[,2]
 )
 data$x    <- loc$V3[ match(data$from, loc$V1)  ]
 data$y    <- loc$V2[ match(data$from, loc$V1)  ]
@@ -100,4 +100,4 @@ svalue(status_bar) <- "Done."
 
     }, error = function(e) svalue(status_bar) <- "Could not compute!")
 
-} #END: RateIndicatorBF
+} # END: RateIndicatorBF
