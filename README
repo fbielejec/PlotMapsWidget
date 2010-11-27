@@ -43,15 +43,16 @@ ________________________________________________________________________________
 # Save BF and I as numerical (change to factors in plot utilities )
 # Add cancel current job functionality
 # Coding convention: 
-                   functions: large letter without underscores (CamelCase)
+                   functions             : large letter without 
+                                           underscores (CamelCase)
                    variables, GUI objects: small letters with underscores,
                                            except variables in data frames 
                                            and labels
                    =                     : when wrapped with another object or 
                                            instruction/statement
                    <-                    : standalone, updating status bar values 
-                   spaces: after #, coma, around all binary operators 
-                           (=, +, -, <- , etc)
+                   spaces                : after #, coma, around all binary 
+                                           operators (=, +, -, <- , etc)
 # Work on speedups (sqldf, paralell computations )   
 ________________________________________________________________________________
                             BUGS
