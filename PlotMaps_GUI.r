@@ -96,11 +96,11 @@ group <- ggroup(horizontal = FALSE, container = big_group)
 add(big_group, ggraphics())
 
 tmp <- gframe("Path to log file", container = group)
-log_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log", 
+log_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/genomes.HKYG.UCLN.EGC.DISC.BSSVS.Indicator.log", 
 		width = 15, container = tmp)
 
 tmp <- gframe("Path to locations file", container = group)
-loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt", 
+loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/locationDegrees", 
     width = 15, container = tmp)
 
 # coordinate system selection from drop-down list
@@ -118,7 +118,7 @@ max_lat_select = gedit("15.0", coerce.with = as.numeric, width = 5, container = 
 
 # slider to choose size of locations points
 tmp <- gframe("Points / font / arrows size", container = group)
-locations_size   <- gspinbutton(from = 0, to = 10, by = 0.5, value = 7, container = tmp)
+locations_size   <- gspinbutton(from = 0, to = 10, by = 0.5, value = 3, container = tmp)
 text_labels_size <- gspinbutton(from = 0, to = 10, by = 0.5, value = 3, container = tmp)
 arrow_size       <- gspinbutton(from = 0, to = 10, by = 0.5, value = 1, container = tmp)
 
@@ -136,7 +136,7 @@ text_labels_col <- gdroplist( c("black", "orange" ), container = tmp, editable =
 
 # plot button
 tmp <- gframe("BF cutoff / BF test / Plot data", container = group)
-specify_bf_cutoff <- gedit("3.0", coerce.with = as.numeric, width = 4, container = tmp) 
+specify_bf_cutoff <- gedit("10.0", coerce.with = as.numeric, width = 4, container = tmp) 
 add(tmp, gbutton("do BF", handler = RateIndicatorBF) )
 add(tmp, gbutton("plot", handler = PlotOnMap) )
 
