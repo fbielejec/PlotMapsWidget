@@ -25,13 +25,18 @@ Widget needs the following R packages installed:
 * ggplot2
 * maps
 * brew
+* colorspace
 * gWidgets
 * gWidgetsRGtk2
 
+You can install them by running: 
 
-Run it by executing PlotMaps.r script (remember to adjust the path). Widget is 
-written for RGtk2. On Windows it will need GTK+ Runtime Environment installed, 
-to be dowloaded for example here:
+install.packages(c("ggplot2", "maps", "brew", "colorspace", "gWidgets", 
+                   "gWidgetsRGtk2" ))
+
+Run the widget by executing PlotMaps.r script (remember to adjust the path). 
+Widget is written for RGtk2. On Windows it will need GTK+ Runtime Environment 
+installed, to be dowloaded for example here:
 
 http://gtk-win.sourceforge.net/home/index.php/Downloads
 ________________________________________________________________________________
