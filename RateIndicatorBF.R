@@ -1,21 +1,3 @@
-############
-#---TEST---#
-############
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Test/indicators.log
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Test/locationDegrees
-#
-#################
-##---Philippe---#
-#################
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/genomes.HKYG.UCLN.EGC.DISC.BSSVS.Indicator.log
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/locationDegrees
-#
-##############
-##---Nuno---#
-##############
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/HIV2A_WAcombi_equalfreq_bssvs_rateMatrix.log
-# /home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Nuno/locationHIV2A.txt
-
 ####################
 #---PROGRAM FLOW---#
 ####################
@@ -61,7 +43,6 @@ nr_of_rates_multiplier <- switch(as.character(symmetrical),
 		"TRUE"  = 2,
 		"FALSE" = 1
 )	
-
 
 qk <- (log(2) + K - 1) / ( (K * (K - 1))/nr_of_rates_multiplier )
 pk <- apply(indicators, 2, mean)
