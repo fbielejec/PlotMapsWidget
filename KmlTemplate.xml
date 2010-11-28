@@ -20,8 +20,8 @@
 
 <% for(i in 1:nrow(out)){ %>
   <Placemark>
-          <name><%=paste(i)%></name>
-  <Style><LineStyle><color> <%=paste(google_colors[i])%> </color><width><%=as.numeric(levels(out$BF))[i]%></width></LineStyle></Style>
+          <name><%=paste(out$from[i], "and", out$to[i], ", BF =", out$BF[i])%></name>
+  <Style><LineStyle><color><%=paste(google_colors[i])%></color><width><%=as.numeric(levels(out$BF))[i]%></width></LineStyle></Style>
       <LineString>
       <tessellate>1</tessellate>
                   <coordinates><%=out[i,]$x%>, <%=out[i,]$y%>, 0.0 
