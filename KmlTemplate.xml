@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
-<Document><name>template.kml</name>
+<Document>
 
 <Folder><name>locations</name>
 
@@ -16,14 +16,16 @@
       
     </Folder>
 
-<Folder><name>discrete_rates</name>
+<Folder><name>rates</name>
 
 <% for(i in 1:nrow(out)){ %>
   <Placemark>
           <name><%=paste(i)%></name>
   <Style><LineStyle><color>FFff00ff</color><width><%=as.numeric(levels(out$BF))[i]%></width></LineStyle></Style>
-      <LineString><coordinates><%=out[i,]$x%>, <%=out[i,]$y%> 
-                               <%=out[i,]$xend%>, <%=out[i,]$yend%>
+      <LineString>
+      <tessellate>1</tessellate>
+                  <coordinates><%=out[i,]$x%>, <%=out[i,]$y%>, 0.0 
+                               <%=out[i,]$xend%>, <%=out[i,]$yend%>, 2000.0
       </coordinates></LineString>
   </Placemark>
 <% } %>  
