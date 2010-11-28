@@ -9,6 +9,7 @@ GetKML <- function(h,...) {
 # rest of the world: aa rr gg bb	
 				
 				N <- dim(out)[1]
+# Hue (0, 360), Saturation(0, 1), Value(0, 1):				
 				hsv <- HSV(seq(0, max(as.numeric(levels(out$BF))), length = N + 1), 1, 1)[-1]
 				colors <- hex(hsv, gamma = 2.2, fixup = FALSE)			
 				google_colors <- rep(NA, N)
