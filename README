@@ -15,8 +15,9 @@
 ________________________________________________________________________________
                             PURPOSE
                             
-R Widget to support processing and visualizing BEAST's phylogeographic models.                             
+R Widget to support processing and visualizing BEAST's phylogeographic models.
 
+BEAST software: http://beast.bio.ed.ac.uk/Main_Page
 
 ________________________________________________________________________________
                             RUNNING
