@@ -23,7 +23,7 @@ PlotOnMap <- function(h,...) {
 	world.map <- world.map[-grep("Lake", world.map$region), ]
 	world.map <- world.map[-grep("Island", world.map$region), ]
 	world.map <- world.map[order(world.map$order), ]
-	
+
 	offest <- 25
 	
 	keep_map <- (world.map$lat >= min_lat - offest) & (world.map$lat <= max_lat + offest) & 
