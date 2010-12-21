@@ -13,9 +13,9 @@ indicators         <- read.table(svalue(log_file), head = TRUE, sep = "\t")
 burn_in    <- 0.1
 bf_cutoff  <- svalue(specify_bf_cutoff)
 
-indicators    <- indicators[grep("indicators", names(indicators))]
-delete <- round(dim(indicators)[1] * burn_in)
-indicators    <- indicators[-c(1:delete), ]
+indicators <- indicators[grep("indicators", names(indicators))]
+delete     <- round(dim(indicators)[1] * burn_in)
+indicators <- indicators[ - c(1 : delete), ]
 
 
 K <- dim(loc)[1]
