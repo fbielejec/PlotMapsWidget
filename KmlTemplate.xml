@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+
+<Folder><name>locations</name>
+
+<% for(i in 1:nrow(locations)){ %>
+      <Placemark>
+        <name><%=paste(locations$location[i])%></name>
+        <Point>
+          <altitudeMode>relativeToGround</altitudeMode>
+          <coordinates><%=locations[i,]$Longitude%>, <%=locations[i,]$Latitude%>, 0</coordinates>
+        </Point>
+      </Placemark>
+<% } %>
+      
+    </Folder>
+
+<Folder><name>rates</name>
+
+<% for(i in 1:nrow(out)){ %>
+  <Placemark>
+          <name><%=paste(out$from[i], "and", out$to[i], ", BF =", out$BF[i])%></name>
+  <Style><LineStyle><color><%=paste(google_colors[i])%></color><width><%=as.numeric(levels(out$BF))[i]%></width></LineStyle></Style>
+      <LineString>
+      <tessellate>1</tessellate>
+                  <coordinates><%=out[i,]$x%>, <%=out[i,]$y%>, 0.0 
+                               <%=out[i,]$xend%>, <%=out[i,]$yend%>, 0.0
+      </coordinates></LineString>
+  </Placemark>
+<% } %>  
+
+     </Folder> 
+
+</Document></kml>
