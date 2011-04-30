@@ -1,0 +1,67 @@
+                        PlotMapsWidget
+
+ 
+  This is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as
+  published by the Free Software Foundation; either version 2
+  of the License, or (at your option) any later version.
+ 
+   This software is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+ 
+ 
+________________________________________________________________________________
+                            PURPOSE
+                            
+R Widget to support processing and visualizing BEAST's phylogeographic models.
+
+BEAST software: http://beast.bio.ed.ac.uk/Main_Page
+
+________________________________________________________________________________
+                            RUNNING
+
+Widget needs the following R packages installed:
+* ggplot2
+* maps
+* brew
+* colorspace
+* gWidgets
+* gWidgetsRGtk2
+
+You can install them by running: 
+
+install.packages(c("ggplot2", "maps", "brew", "colorspace", "gWidgets", 
+                   "gWidgetsRGtk2" ))
+
+Run the widget by executing PlotMaps.r script (remember to adjust the path). 
+Widget is written for RGtk2. On Windows it will need GTK+ Runtime Environment 
+installed, to be dowloaded for example here:
+
+http://gtk-win.sourceforge.net/home/index.php/Downloads
+________________________________________________________________________________
+                            TODO
+                            
+# Add some jitter to labels positions to avoid overplotting (still not perfect)                                                   
+# Dim lat/long fields if user chooses full globe coordinates                                  
+# Save BF and I as numerical (change to factors in plot utilities )
+# Add cancel current job functionality
+# Coding convention: 
+                   functions             : large letter without 
+                                           underscores (CamelCase)
+                   variables, GUI objects: small letters with underscores,
+                                           except variables in data frames 
+                                           and labels
+                   =                     : when wrapped with another object or 
+                                           instruction/statement
+                   <-                    : standalone, updating status bar values 
+                   spaces                : after #, coma, around all binary 
+                                           operators (=, +, -, <- , etc)
+# Work on speedups (sqldf, paralell computations )   
+________________________________________________________________________________
+                            BUGS
+                            
+# Doesn't display messages when computing BF
+
+                            
