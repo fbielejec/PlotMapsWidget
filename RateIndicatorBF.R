@@ -1,9 +1,10 @@
 ####################
 #---PROGRAM FLOW---#
 ####################
-RateIndicatorBF <- function(h,...){
+RateIndicatorBF <- function(h, ...) {
 
-	   tryCatch({
+	   tryCatch( {
+	   
 # maybe move reading data to different handler				   
 svalue(status_bar) <- "Computing..."
 loc                <- read.table(svalue(loc_file), head = FALSE)
@@ -19,9 +20,9 @@ indicators <- indicators[ - c(1 : delete), ]
 
 
 K <- dim(loc)[1]
-if( ncol(indicators) == K*(K - 1) ) {
+if( ncol(indicators) == K * (K - 1) ) {
 	symmetrical = FALSE
-} else if (ncol(indicators) == (K*(K - 1)) / 2) {
+} else if (ncol(indicators) == (K * (K - 1)) / 2) {
 	symmetrical = TRUE
 } else {
 	svalue(status_bar) <- "the number of rate indicators does not match the number of locations!"

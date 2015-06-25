@@ -69,7 +69,6 @@ Save2KML <- function(h, ...) {
 
 # not yet implemented:
 ExitGracefully <- function(h,...) {
-
 	svalue(status_bar) <- "TODO"
 }
 
@@ -96,12 +95,12 @@ group <- ggroup(horizontal = FALSE, container = big_group)
 add(big_group, ggraphics())
 
 tmp <- gframe("Path to log file", container = group)
-log_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/genomes.HKYG.UCLN.EGC.DISC.BSSVS.Indicator.log", 
-		width = 15, container = tmp)
+log_file = gedit("/home/filip/Dropbox/GPUProject/Bahl_data/Bahl.noTime.BSSVS.epoch1.log", 
+		width = 25, container = tmp)
 
 tmp <- gframe("Path to locations file", container = group)
-loc_file = gedit("/home/filip/Dropbox/Phyleography/PlotMaps/supplementary/Philippe/locationDegrees", 
-    width = 15, container = tmp)
+loc_file = gedit("/home/filip/Dropbox/GPUProject/Bahl_data/locationDegrees.txt", 
+    width = 25, container = tmp)
 
 # coordinate system selection from drop-down list
 tmp <- gframe("Arrow tips / Coordinates", container = group)
